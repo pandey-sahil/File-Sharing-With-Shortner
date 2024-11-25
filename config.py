@@ -85,3 +85,5 @@ def LOGGER(name: str) -> logging.Logger:
 
 # Add PublicEarn API Key (NEW)
 PUBLIC_EARN_API_KEY = os.environ.get("PUBLIC_EARN_API_KEY", "")
+#Start Image
+START_IMG = "https://telegra.ph/file/96f14d44c4369420bd9dd.jpg"
