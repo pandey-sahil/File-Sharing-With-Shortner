@@ -7,10 +7,15 @@ from config import PUBLIC_EARN_API_KEY, ADMINS
 # Logger setup
 logger = logging.getLogger(__name__)
 
+# Sample function to get total clicks (you can replace this with actual data from a database)
+async def get_total_clicks(short_url):
+    # This is just a placeholder; replace it with actual API logic or database call
+    return 208  # Example click count
+
 @Client.on_message(filters.private & filters.user(ADMINS) & filters.command('shortlink'))
 async def short_link_handler(client: Client, message: Message):
     """
-    Command to shorten a given link using the PublicEarn API.
+    Command to shorten a given link using the PublicEarn API and send it with custom UI.
     """
     try:
         # Ask for the link to shorten
@@ -31,10 +36,21 @@ async def short_link_handler(client: Client, message: Message):
         short_url = await shorten_link(long_url)
 
         if short_url:
+            # Fetch total clicks (use a database or API for real click counts)
+            total_clicks = await get_total_clicks(short_url)
+
+            # Send a custom message with the shortened link, total clicks, and buttons
             await message.reply_text(
-                f"✅ Link Shortened Successfully!\n\n**Original Link:** {long_url}\n**Shortened Link:** {short_url}",
+                f"✅ **Link Shortened Successfully!**\n\n"
+                f"**Original Link:** {long_url}\n"
+                f"**Shortened Link:** {short_url}\n"
+                f"**Total Clicks:** {total_clicks}",
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("🔗 Open Link", url=short_url)]]
+                    [
+                        [InlineKeyboardButton("🔗 Open Link", url=short_url)],
+                        [InlineKeyboardButton("Tutorial", url="https://t.me/Legacy_Tutorial/4")],
+                        [InlineKeyboardButton("Our Channel", url="https://t.me/Hentai_Legacy")]
+                    ]
                 ),
                 quote=True
             )
