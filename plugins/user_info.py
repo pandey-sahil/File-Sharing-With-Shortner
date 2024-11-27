@@ -1,7 +1,11 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message, InputMediaPhoto
 
-@Client.on_message(filters.command("info") & filters.private)
+# Ensure Bot inherits from Client
+class Bot(Client):
+    pass
+
+@Bot.on_message(filters.command("info") & filters.private)
 async def user_info(client: Client, message: Message):
     user = message.from_user
 
