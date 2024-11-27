@@ -13,7 +13,7 @@ async def stats(bot: Bot, message: Message):
     await message.reply(BOT_STATS_TEXT.format(uptime=time))
 
 # Handle message from non-admin users (normal messages)
-@Bot.on_message(filters.private & filters.incoming & ~filters.user(ADMINS) & ~filters.command())
+@Bot.on_message(filters.private & filters.incoming & ~filters.user(ADMINS))
 async def useless(_, message: Message):
     if USER_REPLY_TEXT:
         await message.reply(USER_REPLY_TEXT)
