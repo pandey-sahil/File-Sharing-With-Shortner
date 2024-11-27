@@ -12,7 +12,7 @@ from helper_func import encode
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-@Bot.on_message(filters.private & filters.user(ADMINS) & ~filters.command(['start', 'users', 'broadcast', 'batch', 'genlink', 'stats']))
+@Bot.on_message(filters.private & filters.user(ADMINS) & ~filters.command(['start', 'users', 'broadcast', 'batch', 'genlink', 'addlink', 'stats']))
 async def channel_post(client: Client, message: Message):
     reply_text = await message.reply_text("Please Wait...!", quote=True)
     try:
