@@ -1,6 +1,12 @@
-from pyrogram import Client
+from pyrogram import Client, filters
+from pyrogram.types import Message
+import os
 
-@Client.on_message(filters.command("info") & filters.private)
+# Create the client app (replace with your app name)
+app = Client("my_bot")
+
+# /info command to fetch user info and profile picture
+@app.on_message(filters.command("info") & filters.private)
 async def user_info(client: Client, message: Message):
     user = message.from_user
 
@@ -16,18 +22,26 @@ async def user_info(client: Client, message: Message):
 """
 
     # Fetch user's profile photo (if available)
-    photos = await client.get_profile_photos(user.id)
+    try:
+        photos = await client.get_profile_photos(user.id)
 
-    if photos.total_count > 0:
-        # Get the file_id of the first profile photo
-        photo_file_id = photos.photos[0].file_id
-        # Send the user's profile photo along with the info
-        await client.send_photo(
-            chat_id=message.chat.id,
-            photo=photo_file_id,
-            caption=user_info,
-            parse_mode="html"
-        )
-    else:
-        # If no profile photo, just send the info
-        await message.reply_text(user_info, parse_mode="html")
+        if photos.total_count > 0:
+            # Get the file_id of the first profile photo
+            photo_file_id = photos.photos[0].file_id
+
+            # Send the user's profile photo along with the info
+            await client.send_photo(
+                chat_id=message.chat.id,
+                photo=photo_file_id,
+                caption=user_info,
+                parse_mode="html"
+            )
+        else:
+            # If no profile photo, just send the info
+            await message.reply_text(user_info, parse_mode="html")
+
+    except Exception as e:
+        await message.reply_text(f"Error: {str(e)}")
+
+# Run the bot
+app.run()
